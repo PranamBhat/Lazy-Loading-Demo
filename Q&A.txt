@@ -1,0 +1,139 @@
+1) Lazy Loading of routes, API requests and images
+
+(1&2) For Lazy Loading Routes you can use Dynamic Loading:
+
+app-routing.module.ts:
+
+{
+path: ':profile_token',
+loadChildren: async () => {
+const service = AppInjector.get(YourService);
+if (service.isStudent()) {
+const a = await import('./modules/student/student.module');
+return a['StudentModule'];
+}
+const b = await import('./modules/school/school.module');
+return b['SchoolModule'];
+}
+}
+
+And in the AppRoutingModule:
+
+export class AppRoutingModule {
+constructor(private injector: Injector) {
+AppInjector = this.injector;
+}
+}
+
+And before the routes array:
+
+export let AppInjector: Injector;
+
+(3) Lazy Loading Images: We can achieve this by adding attribute to our img element. Then call this in our TypeScript file.
+
+Example : https://netbasal.com/lazy-load-images-in-angular-with-two-lines-of-code-beb13cd5a1c4
+
+
+2) Lazy loading v/s Eager loading
+
+Lazy Loading : Loading the page on-demand. It is a good approach when we have a page whcih has 10 users and navigates to different sections/page when clicking.
+
+It makes multiple hits to the DB/Server when we perform some actions.
+
+Eager Loading : Loading the component/page while doing "ng serve" at once. Here we load everything at once.
+
+It makes single hit on the DB/Server. It is useful when we have a very small application and user behavior is known.
+
+
+3) Loading speed and lazy loading
+
+Normal loading speed is very slow when it compared to an application where lazy loading is implemented.
+
+
+4) What is the mechanism of Lazy Loading
+
+Splitting the code structure. Basically splitting the bundle files seperate. So that page will be not depending on bundle files for the second time.
+
+5) In which type of applications is lazy loading preferable?
+
+Huge application with multiple actions such as button events, page naviagtions, etc.
+
+6) What is the usage of lazy loading in angular?
+
+The main usage is - resource consumption and response time.
+
+7) Advice on Lazy loading
+
+This has been already covered in the webinar. 
+
+(1) If possible, do not lazy load routes that are most frequently visited by your users.
+(2) Keep your chunk sizes as small as possible (Only import what you need and keep shared modules as compact as possible).
+(3) Use router states to show a loader or animation when a lazy loaded route is being fetched so they do not think your application lags.
+
+8) What happens in angular 7 and angular 8, How does it improve the speed of repo due to lazy loading?
+
+There's no much difference when it comes to lazy loading on different Angular versions. Speed is ocnsistent in both the versions.
+
+9) About how to load more than one lazy load module in a single page ?
+
+Try something like this:
+
+const routes: Routes = [
+  {
+    path: 'mypath/home',
+    loadChildren: () => HomeModule,
+    canLoad: [HomeGuard]
+  },
+  {
+    path: 'mypath/userPage',
+    loadChildren: () => UserModule,
+    canLoad: [UserGuard]
+  },
+]
+
+Example : https://stackoverflow.com/questions/50267485/angular-lazy-load-multiple-modules-with-the-same-route
+
+10) Lazy loading table data
+
+For implenting lazy loading on "table" data, consider these factors:
+
+(1) Make use of CDK "scrolling" package available in Angular. The cdkScrollable directive and the ScrollDispatcher service together allow components to react to scrolling in any of its ancestor scrolling containers.
+
+(2) Implement the infinite scrolling for the table from the front-end perspective.
+
+(3) Apply server-side pagination and load your data based on scrolling.
+
+CDK Scrollable : https://material.angular.io/cdk/scrolling/overview
+
+Infinite Scrolling in Angular : 
+
+https://pusher.com/tutorials/infinite-scrolling-angular-cdk/
+
+https://jnpiyush.medium.com/how-to-implement-infinite-scroll-in-angular-app-1f749811ee66
+
+Demo :
+
+https://stackblitz.com/edit/angular-cdk-demo-virtual-scroll
+
+https://stackblitz.com/edit/angular-material-table-infinite-load
+
+Server Side Pagination : https://www.c-sharpcorner.com/article/server-side-pagination-using-asp-net-core-and-angular-8-part-two/
+
+11) Best way to optimise the code size and lazy loading
+
+- Try to use only required imports and packages in your application.
+- Do not use third party libraries and url's.
+- Make use of shared service when sharing data.
+
+12) What is the advantage of preloading lazy loaded modules and also hash techniques in routing?
+
+- Everything will be loaded at once. 
+- It makes single hit of DB/Server. 
+- Useful for a small application where user behavior on the application is well known.
+
+13) Is lazy loading always better than Eager or Pre Loading ?
+
+Yes. Obviously, when it comes to huge application. Time and effieciency plays a major role in Lazy Loading.
+
+
+
