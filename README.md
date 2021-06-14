@@ -13,7 +13,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ---------------------------------------------------------------------------
 
-<img src="/screenshots/Lazy Loading Demo 1.JPG" width="1000" />
+<img src="/screenshots/Lazy Loading Demo 1.jpg" width="1000" />
 
 ---------------------------------------------------------------------------
 
